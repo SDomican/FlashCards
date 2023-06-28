@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashCards
 {
@@ -47,15 +42,23 @@ namespace FlashCards
                             GetAllRecords(sqlConnection);
                             break;
 
-                        //case "2":
-                        //    Insert();
-                        //    break;
+                        case "2":
+                            InsertStack(sqlConnection);
+                            break;
 
                         //case "3":
-                        //    Delete();
+                        //    InsertCard(sqlConnection);
                         //    break;
 
                         //case "4":
+                        //    DeleteStack();
+                        //    break;
+
+                        //case "5":
+                        //    DeleteCard();
+                        //    break;
+
+                        //case "6":
                         //    Update();
                         //    break;
 
@@ -86,6 +89,48 @@ namespace FlashCards
             }
             dataReader.Close();
         }
+
+        //Create => CRUD
+        static void InsertStack(SqlConnection sqlConnection)
+        {
+            sqlConnection.Open();
+            Console.WriteLine("Enter Stack name");
+            string stackName = Console.ReadLine();
+
+            string insertQuery = $"INSERT INTO Flashcard_Stack(stack_Id) VALUES('{stackName}')";
+            SqlCommand insertCommand = new SqlCommand(insertQuery, sqlConnection);
+            insertCommand.ExecuteNonQuery();
+            Console.WriteLine("Data is succesfully inserted into table!");
+            sqlConnection.Close();
+        }
+
+
+        //Delete => CRUD
+        static void DeleteStack(SqlConnection sqlConnection)
+        {
+            sqlConnection.Open();
+            Console.WriteLine("Enter Stack id to delete");
+            int d_id = int.Parse(Console.ReadLine());
+            string deleteQuery = $"DELETE FROM Flashcard_Stack WHERE user_id = {d_id.ToString()}";
+            SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
+            deleteCommand.ExecuteNonQuery();
+            Console.WriteLine("Deleted successfully");
+            sqlConnection.Close();
+        }
+
+        //Delete => CRUD
+        static void DeleteCard(SqlConnection sqlConnection)
+        {
+            sqlConnection.Open();
+            Console.WriteLine("Enter id to delete");
+            int d_id = int.Parse(Console.ReadLine());
+            string deleteQuery = $"DELETE FROM Details WHERE user_id = {d_id.ToString()}";
+            SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
+            deleteCommand.ExecuteNonQuery();
+            Console.WriteLine("Deleted successfully");
+            sqlConnection.Close();
+        }
+
 
     }
 }
