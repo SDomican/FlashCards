@@ -49,9 +49,9 @@ namespace FlashCards
                             InsertStack(sqlConnection);
                             break;
 
-                        //case "3":
-                        //    InsertCard(sqlConnection);
-                        //    break;
+                        case "3":
+                            InsertCard(sqlConnection);
+                            break;
 
                         case "4":
                             DeleteStack(sqlConnection);
@@ -86,16 +86,19 @@ namespace FlashCards
         static void GetAllRecords(SqlConnection sqlConnection)
         {
             sqlConnection.Open();
-            //string displayQuery = "SELECT * FROM Flashcard_Stack INNER JOIN Flashcards ON Flashcards.Flashcard_Id=Flashcard_Stack.Stack_id;";
 
-            string displayQuery = "SELECT * FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
+            //string displayQuery = "SELECT * FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
+
+            string displayQuery = "SELECT Stack_name, Name, Value FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
 
             SqlCommand displayCommand = new SqlCommand(displayQuery, sqlConnection);
             SqlDataReader dataReader = displayCommand.ExecuteReader();
 
             while (dataReader.Read())
             {
-                Console.WriteLine($"stack_Id: {dataReader.GetValue(0)}, stack_Name: {dataReader.GetValue(1)}, Flashcard_Id: {dataReader.GetValue(2)}, Flashcard Value: {dataReader.GetValue(3)}");
+                //Console.WriteLine($"stack_Id: {dataReader.GetValue(0)}, stack_Name: {dataReader.GetValue(1)}, Flashcard_Id: {dataReader.GetValue(2)}, Flashcard Value: {dataReader.GetValue(3)}");
+
+                Console.WriteLine($"stack_Name: {dataReader.GetValue(0)}, Flashcard Value: {dataReader.GetValue(1)}");
             }
             dataReader.Close();
             sqlConnection.Close();
@@ -103,6 +106,24 @@ namespace FlashCards
 
         //Create => CRUD
         static void InsertStack(SqlConnection sqlConnection)
+        {
+            sqlConnection.Open();
+            Console.WriteLine("Enter Stack name");
+            string stackName = Console.ReadLine();
+
+            if (!string.IsNullOrEmpty(stackName))
+            {
+                string insertQuery = $"INSERT INTO Flashcard_Stack(stack_name) VALUES('{stackName}')";
+                SqlCommand insertCommand = new SqlCommand(insertQuery, sqlConnection);
+                insertCommand.ExecuteNonQuery();
+                Console.WriteLine("Data is succesfully inserted into table!");
+            }
+
+            sqlConnection.Close();
+        }
+
+        //Create => CRUD
+        static void InsertCard(SqlConnection sqlConnection)
         {
             sqlConnection.Open();
             Console.WriteLine("Enter Stack name");

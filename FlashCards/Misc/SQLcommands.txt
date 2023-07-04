@@ -1,0 +1,20 @@
+SELECT * FROM Flashcard_Stack 
+LEFT JOIN Flashcards ON Flashcards.Flashcard_Id=Flashcard_Stack.Stack_id;
+
+SELECT * FROM Flashcard_Stack 
+
+SELECT * FROM Flashcards 
+
+--INSERT INTO Flashcard_Stack(stack_name) VALUES('{testStack}')
+
+INSERT INTO Flashcards(Name, Value, Stack_Id) VALUES('New Card', 'Ace of Spades', '1')
+
+-- Flashcards ---
+Flashcard_Id (int)
+Name ((nvarchar(50))
+Value ((nvarchar(50))
+Stack_Id (int)
+
+--Flashcard_Stack --
+Stack_id (int)
+Stack_name((nvarchar(50))
