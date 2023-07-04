@@ -89,7 +89,7 @@ namespace FlashCards
 
             //string displayQuery = "SELECT * FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
 
-            string displayQuery = "SELECT Stack_name, Name, Value FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
+            string displayQuery = "SELECT Stack_name, Flashcards.Name,  Flashcards.Value FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Stack_Id=Flashcard_Stack.Stack_id;";
 
             SqlCommand displayCommand = new SqlCommand(displayQuery, sqlConnection);
             SqlDataReader dataReader = displayCommand.ExecuteReader();
@@ -98,7 +98,12 @@ namespace FlashCards
             {
                 //Console.WriteLine($"stack_Id: {dataReader.GetValue(0)}, stack_Name: {dataReader.GetValue(1)}, Flashcard_Id: {dataReader.GetValue(2)}, Flashcard Value: {dataReader.GetValue(3)}");
 
-                Console.WriteLine($"stack_Name: {dataReader.GetValue(0)}, Flashcard Value: {dataReader.GetValue(1)}");
+                string cardName = dataReader.GetValue(1).ToString();
+                string cardValue = dataReader.GetValue(2).ToString();
+
+                FlashCardDTO newFlashCardDTO = new FlashCardDTO(cardName, cardValue);
+
+                Console.WriteLine($"Stack Name: {dataReader.GetValue(0)}, Card Name: {dataReader.GetValue(1)}, Card Value: {dataReader.GetValue(2)}");
             }
             dataReader.Close();
             sqlConnection.Close();
