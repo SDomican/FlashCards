@@ -87,7 +87,7 @@ namespace FlashCards
         {
             sqlConnection.Open();
 
-            //string displayQuery = "SELECT * FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Flashcard_Id = Flashcard_Stack.Stack_id";
+            List<StackDTO> stackList = new List<StackDTO>();
 
             string displayQuery = "SELECT Stack_name, Flashcards.Name,  Flashcards.Value FROM Flashcard_Stack LEFT JOIN Flashcards ON Flashcards.Stack_Id=Flashcard_Stack.Stack_id;";
 
@@ -97,13 +97,22 @@ namespace FlashCards
             while (dataReader.Read())
             {
                 //Console.WriteLine($"stack_Id: {dataReader.GetValue(0)}, stack_Name: {dataReader.GetValue(1)}, Flashcard_Id: {dataReader.GetValue(2)}, Flashcard Value: {dataReader.GetValue(3)}");
+                string cardName = "N/A";
+                string cardValue = "N/A"; ;
 
-                string cardName = dataReader.GetValue(1).ToString();
-                string cardValue = dataReader.GetValue(2).ToString();
+                List<FlashCardDTO> cardList = new List<FlashCardDTO>();
+
+                if (!String.IsNullOrEmpty(dataReader.GetValue(1).ToString())) { cardName = dataReader.GetValue(1).ToString(); }
+
+                if (!String.IsNullOrEmpty(dataReader.GetValue(2).ToString())) { cardValue = dataReader.GetValue(2).ToString(); }
 
                 FlashCardDTO newFlashCardDTO = new FlashCardDTO(cardName, cardValue);
+                cardList.Add(newFlashCardDTO);
 
-                Console.WriteLine($"Stack Name: {dataReader.GetValue(0)}, Card Name: {dataReader.GetValue(1)}, Card Value: {dataReader.GetValue(2)}");
+                StackDTO newStackDTOItem = new StackDTO(dataReader.GetValue(0).ToString(), cardList);
+
+                Console.WriteLine($"Card Name: {newFlashCardDTO.Name}, Card Value: {newFlashCardDTO.Value}");
+
             }
             dataReader.Close();
             sqlConnection.Close();

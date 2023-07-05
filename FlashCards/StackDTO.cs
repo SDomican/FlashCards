@@ -9,8 +9,13 @@ namespace FlashCards
     internal class StackDTO
     {
         public string Name { get; set; } = string.Empty;
-        public string Value { get; set; } = string.Empty;
         public List<FlashCardDTO> CardList { get; set; } = new List<FlashCardDTO>();
+
+        public StackDTO(string name, List<FlashCardDTO> flashCards)
+        {
+            Name = name;
+            CardList = flashCards;
+        }
     }
 
     internal class FlashCardDTO
