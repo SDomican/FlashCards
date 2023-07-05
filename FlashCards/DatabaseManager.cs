@@ -30,6 +30,7 @@ namespace FlashCards
                     Console.WriteLine("\nType 5 to delete a Card.");
                     Console.WriteLine("\nType 6 to Update a Card.");
                     Console.WriteLine("\nType 7 to Update a Stack.");
+                    Console.WriteLine("\nType 8 to Debug.");
                     Console.WriteLine("\n---------------------------------------\n");
 
                     string? commandInput = Console.ReadLine();
@@ -69,6 +70,10 @@ namespace FlashCards
                         //    UpdateStack();
                         //    break;
 
+                        case "8":
+                            Debug();
+                            break;
+
                         default:
                             Console.WriteLine("\nInvalid Command. Please type a number from 0 to 4.\n");
                             break;
@@ -80,6 +85,15 @@ namespace FlashCards
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private void Debug()
+        {
+            List<FlashCardDTO> cardList = new List<FlashCardDTO>();
+            cardList.Add(new FlashCardDTO("Test Card", "Card Value"));
+            StackDTO test = new StackDTO("Stack Name", cardList);
+
+            Console.WriteLine(test);
         }
 
         //Retrieve => CRUD
@@ -96,11 +110,13 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                //Console.WriteLine($"stack_Id: {dataReader.GetValue(0)}, stack_Name: {dataReader.GetValue(1)}, Flashcard_Id: {dataReader.GetValue(2)}, Flashcard Value: {dataReader.GetValue(3)}");
                 string cardName = "N/A";
-                string cardValue = "N/A"; ;
+                string cardValue = "N/A";
+                string stackName = "N/A";
 
                 List<FlashCardDTO> cardList = new List<FlashCardDTO>();
+
+                if (!String.IsNullOrEmpty(dataReader.GetValue(0).ToString())) { stackName = dataReader.GetValue(0).ToString(); }
 
                 if (!String.IsNullOrEmpty(dataReader.GetValue(1).ToString())) { cardName = dataReader.GetValue(1).ToString(); }
 
@@ -109,9 +125,15 @@ namespace FlashCards
                 FlashCardDTO newFlashCardDTO = new FlashCardDTO(cardName, cardValue);
                 cardList.Add(newFlashCardDTO);
 
-                StackDTO newStackDTOItem = new StackDTO(dataReader.GetValue(0).ToString(), cardList);
+                StackDTO newStackDTOItem = new StackDTO(stackName, cardList);
 
-                Console.WriteLine($"Card Name: {newFlashCardDTO.Name}, Card Value: {newFlashCardDTO.Value}");
+                Console.WriteLine(newStackDTOItem.ToString());
+                Console.WriteLine("---------------------------");
+
+                //foreach(StackDTO stack in stackList) { Console.WriteLine(stack.ToString()); }
+
+
+                //Console.WriteLine($"Card Name: {newFlashCardDTO.Name}, Card Value: {newFlashCardDTO.Value}");
 
             }
             dataReader.Close();

@@ -16,6 +16,17 @@ namespace FlashCards
             Name = name;
             CardList = flashCards;
         }
+
+        public override string ToString()
+        {
+            string cards = "";
+            foreach(var card in CardList)
+            {
+                cards += $"\nCard Name: {card.Name}, Card Value: {card.Value}";
+            }
+
+            return $"Stack Name: {Name} {cards}";
+        }
     }
 
     internal class FlashCardDTO
