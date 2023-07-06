@@ -132,7 +132,6 @@ namespace FlashCards
 
                 //foreach(StackDTO stack in stackList) { Console.WriteLine(stack.ToString()); }
 
-
                 //Console.WriteLine($"Card Name: {newFlashCardDTO.Name}, Card Value: {newFlashCardDTO.Value}");
 
             }
@@ -181,9 +180,9 @@ namespace FlashCards
         static void DeleteStack(SqlConnection sqlConnection)
         {
             sqlConnection.Open();
-            Console.WriteLine("Enter Stack id to delete");
-            int d_id = int.Parse(Console.ReadLine());
-            string deleteQuery = $"DELETE FROM Flashcard_Stack WHERE Stack_id = {d_id.ToString()}";
+            Console.WriteLine("Enter Stack Name to delete");
+            string input = Console.ReadLine();
+            string deleteQuery = $"DELETE FROM Flashcard_Stack WHERE Stack_name = '{input}'";
             SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
             deleteCommand.ExecuteNonQuery();
             Console.WriteLine("Deleted successfully");
