@@ -58,9 +58,9 @@ namespace FlashCards
                             DeleteStack(sqlConnection);
                             break;
 
-                        //case "5":
-                        //    DeleteCard();
-                        //    break;
+                        case "5":
+                            DeleteCard(sqlConnection);
+                            break;
 
                         //case "6":
                         //    UpdateCard();
@@ -193,9 +193,9 @@ namespace FlashCards
         static void DeleteCard(SqlConnection sqlConnection)
         {
             sqlConnection.Open();
-            Console.WriteLine("Enter id to delete");
-            int d_id = int.Parse(Console.ReadLine());
-            string deleteQuery = $"DELETE FROM Details WHERE user_id = {d_id.ToString()}";
+            Console.WriteLine("Enter Card Name to delete");
+            string input = Console.ReadLine();
+            string deleteQuery = $"DELETE FROM Flashcards WHERE name = '{input}'";
             SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
             deleteCommand.ExecuteNonQuery();
             Console.WriteLine("Deleted successfully");
